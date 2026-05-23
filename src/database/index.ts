@@ -36,7 +36,7 @@ export const initDB = async () => {
         CHECK(type IN ('bug', 'feature_request')),
         status VARCHAR(30) DEFAULT 'open'
         CHECK(status IN ('open', 'in_progress', 'resolved')),
-        reporter_id INT,
+        reporter_id INT NOT NULL REFERENCES users(id),
 
         created_at TIMESTAMPTZ DEFAULT NOW(),
         updated_at TIMESTAMPTZ DEFAULT NOW()

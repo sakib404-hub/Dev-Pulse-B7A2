@@ -67,11 +67,11 @@ const getSingleIssue = async (req: Request, res: Response) => {
 
         const result = await issuesService.getSingleIssueFromDb(id as string)
 
-        if(result.rowCount === 0){
+        if(!result){
             return sendResponse(res, 404, false, 'No Issue Found!');
         }
 
-        return sendResponse(res, 200, true, 'Issue Retrive', result.rows[0]);
+        return sendResponse(res, 200, true, 'Issue Retrive', result);
     } catch (err) {
         if (err instanceof Error) {
             return sendResponse(
