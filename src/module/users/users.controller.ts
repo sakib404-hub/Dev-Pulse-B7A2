@@ -15,7 +15,7 @@ const createUser = async(req : Request, res : Response)=>{
 
     }catch(err){
         if(err instanceof Error){
-            return sendResponse(res, 500, false, 'Failed to create user, internal server Error', undefined, err.message)
+            return sendResponse(res, 500, false, 'Failed to create user!', undefined, err.message)
         }
         return sendResponse(res, 500, false, 'Failed to create user!', undefined, 'Unknown Error Occured!')
     }

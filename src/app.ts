@@ -1,5 +1,4 @@
 import express, { type Application, type Request, type Response } from 'express';
-import { issuesRoute } from './module/issues/issues.route';
 import { UsersRoute } from './module/users/users.route';
 const app : Application = express();
 
