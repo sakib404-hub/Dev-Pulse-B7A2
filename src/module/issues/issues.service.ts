@@ -14,9 +14,14 @@ const createIssues = async (payLoad: IIssues) => {
     return result;
 };
 
+const getAllIssueFromDatabase = async()=>{
+    const result = await pool.query(`SELECT * FROM issues ORDER BY created_at DESC`);
+    return result;
+}
 
 const issuesService = {
-    createIssues
+    createIssues,
+    getAllIssueFromDatabase
 }
 
 export default issuesService;

@@ -31,14 +31,34 @@ const createIssue = async(req : Request, res : Response)=>{
     }
 }
 
-const getAllIssues = (req : Request, res : Response)=>{
-    try{
-        res.status(200).json({
-            success : true,
-            message : 'you will get all the issues from here!'
-        })
-    }catch(err : any){
+const getAllIssues = async(req : Request, res : Response)=>{
+   try{
+        const result = await issuesService.getAllIssueFromDatabase();
 
+        if(result.rowCount === 0){
+            return sendResponse(res, 200, true, 'No Issues found!', undefined);
+        }
+
+        sendResponse(res, 200,true, 'Successfully Fetched All the Issues', result.rows);
+
+    }catch(err){
+        if(err instanceof Error){
+            return sendResponse(
+                res, 
+                500, 
+                false,
+                'Failed to retrive Issue!',
+                undefined, err.message
+            );
+        }
+        return sendResponse(
+            res,
+            500, 
+            false, 
+            'Failed to retrive Issue',
+            undefined,
+            'Unknown Error Occured!'
+        )
     }
 }
 
