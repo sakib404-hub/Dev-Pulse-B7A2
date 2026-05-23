@@ -104,7 +104,6 @@ const getAllIssueFromDatabase = async (query: any) => {
     return formattedIssues;
 };
 
-
 const getSingleIssueFromDb = async (id: string) => {
 
     // get issue
@@ -144,10 +143,35 @@ const getSingleIssueFromDb = async (id: string) => {
     };
 };
 
+const updateIssue = async (id: string, payLoad: any) => {
+
+    const { title, description, type, status } = payLoad;
+
+    const result = await pool.query(
+        `
+        UPDATE issues
+        SET
+            title = COALESCE($1, title),
+            description = COALESCE($2, description),
+            type = COALESCE($3, type),
+            status = COALESCE($4, status),
+            updated_at = NOW()
+
+        WHERE id = $5
+        RETURNING *;
+        `,
+        [title, description, type, status, id]
+    );
+
+    return result;
+};
+
+
 const issuesService = {
     createIssues,
     getAllIssueFromDatabase,
-    getSingleIssueFromDb
+    getSingleIssueFromDb,
+    updateIssue
 }
 
 export default issuesService;

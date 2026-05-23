@@ -93,8 +93,55 @@ const getSingleIssue = async (req: Request, res: Response) => {
     }
 }
 
+const updateIssue = async(req : Request, res : Response)=>{
+    try{
+
+        const { id } = req.params;
+        const body = req.body;
+
+        const result = await issuesService.updateIssue(id as string, body);
+
+        if(result.rowCount === 0){
+             return sendResponse(
+             res,
+             404,
+             false,
+            'Issue not found'
+            );
+        }
+
+        return sendResponse(
+        res,
+        200,
+        true,
+        'Issue updated successfully',
+        result.rows[0]
+        );
+
+    }catch(err){
+         if (err instanceof Error) {
+            return sendResponse(
+                res,
+                500,
+                false,
+                'Failed to update Issue!',
+                undefined, err.message
+            );
+        }
+        return sendResponse(
+            res,
+            500,
+            false,
+            'Failed to update Issue',
+            undefined,
+            'Unknown Error Occured!'
+        )
+    }
+}
+
 export const issuesController = {
     createIssue,
     getAllIssues,
-    getSingleIssue
+    getSingleIssue, 
+    updateIssue
 }
