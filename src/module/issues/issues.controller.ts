@@ -1,6 +1,8 @@
 import type { Request, Response } from "express";
 import sendResponse from "../../utility/sendResponse";
 import issuesService from "./issues.service";
+import { pool } from "../../database";
+import { userService } from "../users/users.service";
 
 
 const createIssue = async (req: Request, res: Response) => {
@@ -35,7 +37,7 @@ const createIssue = async (req: Request, res: Response) => {
 
 const getAllIssues = async (req: Request, res: Response) => {
     try {
-        const  query  = req.query;
+        const query = req.query;
         const result = await issuesService.getAllIssueFromDatabase(query);
 
         sendResponse(res, 200, true, 'Successfully Fetched All the Issues', result);
@@ -63,11 +65,11 @@ const getAllIssues = async (req: Request, res: Response) => {
 
 const getSingleIssue = async (req: Request, res: Response) => {
     try {
-        const {id} = req.params;
+        const { id } = req.params;
 
         const result = await issuesService.getSingleIssueFromDb(id as string)
 
-        if(!result){
+        if (!result) {
             return sendResponse(res, 404, false, 'No Issue Found!');
         }
 
@@ -93,33 +95,33 @@ const getSingleIssue = async (req: Request, res: Response) => {
     }
 }
 
-const updateIssue = async(req : Request, res : Response)=>{
-    try{
+const updateIssue = async (req: Request, res: Response) => {
+    try {
 
         const { id } = req.params;
         const body = req.body;
 
         const result = await issuesService.updateIssue(id as string, body);
 
-        if(result.rowCount === 0){
-             return sendResponse(
-             res,
-             404,
-             false,
-            'Issue not found'
+        if (result.rowCount === 0) {
+            return sendResponse(
+                res,
+                404,
+                false,
+                'Issue not found'
             );
         }
 
         return sendResponse(
-        res,
-        200,
-        true,
-        'Issue updated successfully',
-        result.rows[0]
+            res,
+            200,
+            true,
+            'Issue updated successfully',
+            result.rows[0]
         );
 
-    }catch(err){
-         if (err instanceof Error) {
+    } catch (err) {
+        if (err instanceof Error) {
             return sendResponse(
                 res,
                 500,
@@ -139,9 +141,50 @@ const updateIssue = async(req : Request, res : Response)=>{
     }
 }
 
+const deleteIssue = async (req: Request, res: Response) => {
+    try {
+
+        const { id } = req.params;
+
+        const result = await issuesService.deleteIssueFromDatabase(id as string);
+
+        if (result.rowCount === 0) {
+            return sendResponse(res, 404, false, "Issue not found!");
+        }
+
+        return sendResponse(
+            res,
+            200,
+            true,
+            "Issue Deleted successfully",
+            result.rows[0]
+        );
+
+    } catch (err) {
+        if (err instanceof Error) {
+            return sendResponse(
+                res,
+                500,
+                false,
+                'Failed to delete Issue!',
+                undefined, err.message
+            );
+        }
+        return sendResponse(
+            res,
+            500,
+            false,
+            'Failed to delete Issue',
+            undefined,
+            'Unknown Error Occured!'
+        )
+    }
+}
+
 export const issuesController = {
     createIssue,
     getAllIssues,
-    getSingleIssue, 
-    updateIssue
+    getSingleIssue,
+    updateIssue,
+    deleteIssue
 }

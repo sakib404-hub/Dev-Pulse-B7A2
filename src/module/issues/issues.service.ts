@@ -166,12 +166,18 @@ const updateIssue = async (id: string, payLoad: any) => {
     return result;
 };
 
+const deleteIssueFromDatabase = async(id : string)=>{
+    const result = await pool.query(`DELETE FROM issues WHERE id=$1 RETURNING *`, [id]);
+    return result;
+}
+
 
 const issuesService = {
     createIssues,
     getAllIssueFromDatabase,
     getSingleIssueFromDb,
-    updateIssue
+    updateIssue,
+    deleteIssueFromDatabase
 }
 
 export default issuesService;
