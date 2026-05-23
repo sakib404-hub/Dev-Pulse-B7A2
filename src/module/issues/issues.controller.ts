@@ -5,8 +5,10 @@ import issuesService from "./issues.service";
 
 const createIssue = async (req: Request, res: Response) => {
     try {
+        const reporter_id = req.user.id;
+
         const body = req.body;
-        const result = await issuesService.createIssues(body);
+        const result = await issuesService.createIssues(body, reporter_id as string);
 
         return sendResponse(res, 201, true, 'Issue created successfully', result.rows[0]);
 
@@ -33,13 +35,10 @@ const createIssue = async (req: Request, res: Response) => {
 
 const getAllIssues = async (req: Request, res: Response) => {
     try {
-        const result = await issuesService.getAllIssueFromDatabase();
+        const  query  = req.query;
+        const result = await issuesService.getAllIssueFromDatabase(query);
 
-        if (result.rowCount === 0) {
-            return sendResponse(res, 200, true, 'No Issues found!', undefined);
-        }
-
-        sendResponse(res, 200, true, 'Successfully Fetched All the Issues', result.rows);
+        sendResponse(res, 200, true, 'Successfully Fetched All the Issues', result);
 
     } catch (err) {
         if (err instanceof Error) {
