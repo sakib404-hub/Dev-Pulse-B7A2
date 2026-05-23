@@ -3,18 +3,18 @@ import sendResponse from "../../utility/sendResponse";
 import issuesService from "./issues.service";
 
 
-const createIssue = async(req : Request, res : Response)=>{
-    try{
+const createIssue = async (req: Request, res: Response) => {
+    try {
         const body = req.body;
         const result = await issuesService.createIssues(body);
 
         return sendResponse(res, 201, true, 'Issue created successfully', result.rows[0]);
 
-    }catch(err){
-        if(err instanceof Error){
+    } catch (err) {
+        if (err instanceof Error) {
             return sendResponse(
-                res, 
-                500, 
+                res,
+                500,
                 false,
                 'Failed to create Issue!',
                 undefined, err.message
@@ -22,8 +22,8 @@ const createIssue = async(req : Request, res : Response)=>{
         }
         return sendResponse(
             res,
-            500, 
-            false, 
+            500,
+            false,
             'Failed to create Issue',
             undefined,
             'Unknown Error Occured!'
@@ -31,21 +31,21 @@ const createIssue = async(req : Request, res : Response)=>{
     }
 }
 
-const getAllIssues = async(req : Request, res : Response)=>{
-   try{
+const getAllIssues = async (req: Request, res: Response) => {
+    try {
         const result = await issuesService.getAllIssueFromDatabase();
 
-        if(result.rowCount === 0){
+        if (result.rowCount === 0) {
             return sendResponse(res, 200, true, 'No Issues found!', undefined);
         }
 
-        sendResponse(res, 200,true, 'Successfully Fetched All the Issues', result.rows);
+        sendResponse(res, 200, true, 'Successfully Fetched All the Issues', result.rows);
 
-    }catch(err){
-        if(err instanceof Error){
+    } catch (err) {
+        if (err instanceof Error) {
             return sendResponse(
-                res, 
-                500, 
+                res,
+                500,
                 false,
                 'Failed to retrive Issue!',
                 undefined, err.message
@@ -53,8 +53,40 @@ const getAllIssues = async(req : Request, res : Response)=>{
         }
         return sendResponse(
             res,
-            500, 
-            false, 
+            500,
+            false,
+            'Failed to retrive Issue',
+            undefined,
+            'Unknown Error Occured!'
+        )
+    }
+}
+
+const getSingleIssue = async (req: Request, res: Response) => {
+    try {
+        const {id} = req.params;
+
+        const result = await issuesService.getSingleIssueFromDb(id as string)
+
+        if(result.rowCount === 0){
+            return sendResponse(res, 404, false, 'No Issue Found!');
+        }
+
+        return sendResponse(res, 200, true, 'Issue Retrive', result.rows[0]);
+    } catch (err) {
+        if (err instanceof Error) {
+            return sendResponse(
+                res,
+                500,
+                false,
+                'Failed to retrive Issue!',
+                undefined, err.message
+            );
+        }
+        return sendResponse(
+            res,
+            500,
+            false,
             'Failed to retrive Issue',
             undefined,
             'Unknown Error Occured!'
@@ -64,5 +96,6 @@ const getAllIssues = async(req : Request, res : Response)=>{
 
 export const issuesController = {
     createIssue,
-    getAllIssues
+    getAllIssues,
+    getSingleIssue
 }
