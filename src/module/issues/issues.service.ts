@@ -171,7 +171,6 @@ const deleteIssueFromDatabase = async(id : string)=>{
     return result;
 }
 
-
 const issuesService = {
     createIssues,
     getAllIssueFromDatabase,

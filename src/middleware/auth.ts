@@ -27,13 +27,6 @@ const auth = () => {
         next()
 
         }catch(err : any){
-            if(err.name === 'JsonWebTokenError'){
-                return sendResponse(res, 401, false, 'Invalid Token');
-            }
-
-             if (err.name === 'TokenExpiredError') {
-                return sendResponse(res, 401, false, 'Token Expired');
-            }
            next(err);
         }
     }

@@ -2,11 +2,17 @@ import express, { type Application, type Request, type Response } from 'express'
 import { UsersRoute } from './module/users/users.route';
 import { issuesRoute } from './module/issues/issues.route';
 const app : Application = express();
+import cors from 'cors'
+import gloabalErrorHandler from './middleware/globalErrorHandler';
 
 
 
 //? middlewares
 app.use(express.json());
+app.use(cors(
+    {
+  origin: 'http://localhost:5000',
+}));
 
 
 app.use('/api/auth', UsersRoute);
@@ -18,7 +24,6 @@ app.get('/', (req: Request, res: Response) => {
     res.status(200).json({
         success: true,
         message: 'Server is running successfully 🚀',
-
         data: {
             author: 'Md. Shakib Hossen',
             version: '1.0.0',
@@ -28,5 +33,6 @@ app.get('/', (req: Request, res: Response) => {
     });
 });
 
+app.use(gloabalErrorHandler);
 
 export default app;
