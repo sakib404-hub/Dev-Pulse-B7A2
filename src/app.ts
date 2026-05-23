@@ -1,5 +1,6 @@
 import express, { type Application, type Request, type Response } from 'express';
 import { UsersRoute } from './module/users/users.route';
+import { issuesRoute } from './module/issues/issues.route';
 const app : Application = express();
 
 
@@ -8,7 +9,8 @@ const app : Application = express();
 app.use(express.json());
 
 
-app.use('/api/auth', UsersRoute)
+app.use('/api/auth', UsersRoute);
+app.use('/api/issues', issuesRoute);
 
 
 
