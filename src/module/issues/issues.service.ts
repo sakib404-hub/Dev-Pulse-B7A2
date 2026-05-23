@@ -113,7 +113,7 @@ const getSingleIssueFromDb = async (id: string) => {
     );
 
     if (issueResult.rowCount === 0) {
-        throw new Error('No Issue Found!');
+       return null;
     }
 
     const issue = issueResult.rows[0];

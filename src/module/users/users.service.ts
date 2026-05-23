@@ -32,6 +32,7 @@ const loginUserFromDatabase = async(payLoad : AuthInformation)=>{
     if(!isMatched){
         throw new Error('Invalid Password!');
     }
+    delete result.rows[0].password;
 
     //? token generation
 

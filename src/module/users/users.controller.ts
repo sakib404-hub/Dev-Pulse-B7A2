@@ -14,9 +14,9 @@ const createUser = async (req: Request, res: Response) => {
 
     } catch (err) {
         if (err instanceof Error) {
-            return sendResponse(res, 500, false, 'Failed to create user!', undefined, err.message);
+            return sendResponse(res, 500, false, 'Unexpected server or database error.', undefined, err.message);
         }
-        return sendResponse(res, 500, false, 'Failed to create user!', undefined, 'Unknown Error Occured!');
+        return sendResponse(res, 500, false, 'Unexpected server or database error.', undefined, 'Unknown Error Occured!');
     }
 }
 
@@ -31,9 +31,9 @@ const loginUser = async (req: Request, res: Response) => {
 
     } catch (err) {
         if (err instanceof Error) {
-            return sendResponse(res, 500, false, 'Failed to Login!', undefined, err.message);
+            return sendResponse(res, 500, false, 'Unexpected server or database error.', undefined, err.message);
         }
-        return sendResponse(res, 500, false, 'Failed to Login!', undefined, 'Unknown Error Occured!');
+        return sendResponse(res, 500, false, 'Unexpected server or database error.', undefined, 'Unknown Error Occured!');
     }
 }
 

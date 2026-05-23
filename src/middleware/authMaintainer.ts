@@ -9,7 +9,7 @@ const authMaintaner = () =>{
             return next();
         }
 
-        return sendResponse(res, 403, false, 'Forbidden Aceess', undefined, 'Only Maintainer can delete issues!')
+        return sendResponse(res, 403, false, 'Valid token but insufficient role/permissions.', undefined, 'Only Maintainer can delete issues!');
     }
 }
 

@@ -1,8 +1,6 @@
 import type { Request, Response } from "express";
 import sendResponse from "../../utility/sendResponse";
 import issuesService from "./issues.service";
-import { pool } from "../../database";
-import { userService } from "../users/users.service";
 
 
 const createIssue = async (req: Request, res: Response) => {
@@ -20,7 +18,7 @@ const createIssue = async (req: Request, res: Response) => {
                 res,
                 500,
                 false,
-                'Failed to create Issue!',
+                'Unexpected server or database error.',
                 undefined, err.message
             );
         }
@@ -28,7 +26,7 @@ const createIssue = async (req: Request, res: Response) => {
             res,
             500,
             false,
-            'Failed to create Issue',
+            'Unexpected server or database error.',
             undefined,
             'Unknown Error Occured!'
         )
@@ -48,7 +46,7 @@ const getAllIssues = async (req: Request, res: Response) => {
                 res,
                 500,
                 false,
-                'Failed to retrive Issue!',
+                'Unexpected server or database error.',
                 undefined, err.message
             );
         }
@@ -56,7 +54,7 @@ const getAllIssues = async (req: Request, res: Response) => {
             res,
             500,
             false,
-            'Failed to retrive Issue',
+            'Unexpected server or database error.',
             undefined,
             'Unknown Error Occured!'
         )
@@ -70,17 +68,17 @@ const getSingleIssue = async (req: Request, res: Response) => {
         const result = await issuesService.getSingleIssueFromDb(id as string)
 
         if (!result) {
-            return sendResponse(res, 404, false, 'No Issue Found!');
+            return sendResponse(res, 404, false, 'Requested resource does not exist!');
         }
 
-        return sendResponse(res, 200, true, 'Issue Retrive', result);
+        return sendResponse(res, 200, true, 'Issue Retrive Successfully!', result);
     } catch (err) {
         if (err instanceof Error) {
             return sendResponse(
                 res,
                 500,
                 false,
-                'Failed to retrive Issue!',
+                'Unexpected server or database error.',
                 undefined, err.message
             );
         }
@@ -88,7 +86,7 @@ const getSingleIssue = async (req: Request, res: Response) => {
             res,
             500,
             false,
-            'Failed to retrive Issue',
+            'Unexpected server or database error.',
             undefined,
             'Unknown Error Occured!'
         )
@@ -116,7 +114,7 @@ const updateIssue = async (req: Request, res: Response) => {
             res,
             200,
             true,
-            'Issue updated successfully',
+            'Issue updated successfully.',
             result.rows[0]
         );
 
@@ -126,7 +124,7 @@ const updateIssue = async (req: Request, res: Response) => {
                 res,
                 500,
                 false,
-                'Failed to update Issue!',
+                'Unexpected server or database error.',
                 undefined, err.message
             );
         }
@@ -134,7 +132,7 @@ const updateIssue = async (req: Request, res: Response) => {
             res,
             500,
             false,
-            'Failed to update Issue',
+            'Unexpected server or database error.',
             undefined,
             'Unknown Error Occured!'
         )
@@ -149,15 +147,14 @@ const deleteIssue = async (req: Request, res: Response) => {
         const result = await issuesService.deleteIssueFromDatabase(id as string);
 
         if (result.rowCount === 0) {
-            return sendResponse(res, 404, false, "Issue not found!");
+            return sendResponse(res, 404, false, "Requested resource does not exist.");
         }
 
         return sendResponse(
             res,
             200,
             true,
-            "Issue Deleted successfully",
-            result.rows[0]
+            "Issue Deleted successfully."
         );
 
     } catch (err) {
@@ -166,7 +163,7 @@ const deleteIssue = async (req: Request, res: Response) => {
                 res,
                 500,
                 false,
-                'Failed to delete Issue!',
+                'Unexpected server or database error.',
                 undefined, err.message
             );
         }
@@ -174,7 +171,7 @@ const deleteIssue = async (req: Request, res: Response) => {
             res,
             500,
             false,
-            'Failed to delete Issue',
+            'Unexpected server or database error',
             undefined,
             'Unknown Error Occured!'
         )

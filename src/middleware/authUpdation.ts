@@ -23,11 +23,11 @@ const authUpdation = () => {
                 return next();
             }
 
-            if(user.role === 'contributor' && issue.reporter_id === user.id){
+            if(user.role === 'contributor' && issue.reporter_id === user.id && issue.status === 'open'){
                 return next();
             }
 
-            return sendResponse(res, 403, false, 'Forbidden Access!');
+            return sendResponse(res, 403, false, 'Valid token but insufficient role/permissions.');
 
         } catch (err: any) {
             if (err.name === 'JsonWebTokenError') {
