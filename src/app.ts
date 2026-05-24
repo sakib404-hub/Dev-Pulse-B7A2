@@ -11,7 +11,7 @@ import gloabalErrorHandler from './middleware/globalErrorHandler';
 app.use(express.json());
 app.use(cors(
     {
-  origin: 'http://localhost:5000',
+  origin: 'https://dev-pulse-b7-a2-seven.vercel.app',
 }));
 
 
